@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<!--
+  © 2026 Pádel Jueves Central. Todos los derechos reservados.
+  Queda prohibido copiar, modificar, distribuir o reutilizar este código sin autorización expresa por escrito.
+-->
+<html lang="es"><head><meta charset="utf-8">
+<meta name="copyright" content="© 2026 Pádel Jueves Central. Todos los derechos reservados.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f2">
+<meta name="description" content="Clasificación, fichas de jugador, récords y jornadas de la peña de pádel.">
+<meta property="og:title" content="Peña de Pádel — Resultados y Estadísticas">
+<meta property="og:description" content="Clasificación, fichas de jugador, récords y jornadas de la peña de pádel.">
+<title>Peña de Pádel — Resultados y Estadísticas</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎾</text></svg>">
+<style>
+:root{color-scheme:light;--bg:#f2f2f2;--card:#fff;--tx:#111;--mu:#777;--ac:#111;--gd:#111;--bd:#e3e3e3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:640px;margin:0 auto;padding:12px 14px 120px}
+h1,h2{font-family:"Iowan Old Style","Palatino Linotype",Georgia,serif;letter-spacing:-.02em;font-weight:700}
+h1{margin:0;font-size:32px;line-height:1.1}h2{font-size:24px;margin:22px 0 10px;line-height:1.15}p{margin:6px 0}
+.sub{color:var(--mu);font-size:13px}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 0 4px}
+.circ{width:40px;height:40px;border-radius:50%;border:1.5px solid var(--tx);background:var(--card);display:grid;place-items:center;font-size:17px;color:var(--tx);cursor:pointer;padding:0}
+.pill{background:var(--tx);color:#fff;border-radius:999px;padding:9px 22px;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.hero{padding:14px 2px 2px}
+nav{position:fixed;left:0;right:0;bottom:0;z-index:20;display:flex;justify-content:space-around;gap:4px;padding:10px 10px calc(10px + env(safe-area-inset-bottom,0px));background:#e9e9e9;border-top:1px solid var(--bd)}
+nav button{display:flex;flex-direction:column;align-items:center;gap:4px;border:0;background:none;color:var(--tx);font:inherit;font-size:10px;cursor:pointer;padding:0;flex:1}
+nav .ic{width:46px;height:46px;border-radius:14px;background:var(--card);border:1px solid var(--bd);display:grid;place-items:center}
+nav button.on .ic{background:var(--tx);color:#fff;border-color:var(--tx)}
+nav button.on{font-weight:700}
+nav svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.btn{border:1.5px solid var(--tx);background:var(--card);color:var(--tx);border-radius:999px;padding:9px 16px;font:inherit;font-size:14px;white-space:nowrap;cursor:pointer}
+.btn.p{background:var(--tx);color:#fff;font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:22px;padding:14px 16px;margin:10px 0}
+.row{display:flex;align-items:center;gap:10px}.grow{flex:1;min-width:0}
+.rk{width:28px;height:28px;line-height:28px;text-align:center;color:var(--mu);font-weight:700}.top .rk{background:var(--tx);color:#fff;border-radius:50%}
+.nm{font-weight:700}.tg{font-size:10px;color:var(--mu);border:1px solid var(--bd);border-radius:999px;padding:0 7px}
+.pts{font-size:22px;font-weight:800;letter-spacing:-.02em;text-align:right}.pts small{display:block;font-size:9px;color:var(--mu);font-weight:600;letter-spacing:.1em}
+.rec b{font-size:22px;letter-spacing:-.02em}
+select,input,textarea{width:100%;background:var(--card);color:var(--tx);border:1.5px solid var(--bd);border-radius:14px;padding:11px 12px;font:inherit}
+select:focus,input:focus,textarea:focus{outline:none;border-color:var(--tx)}
+input[type=checkbox]{width:auto;accent-color:#111}
+.ckl{display:inline-block;width:48%;margin:3px 0;color:var(--tx);font-size:14px;text-transform:none;letter-spacing:0;font-weight:400}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em;font-weight:600}
+.msg{color:#c62828;font-size:13px;min-height:18px}
+.bn{background:var(--card);border:1px dashed #aaa;border-radius:16px;padding:10px 12px;margin:8px 0;font-size:13px}
+.x{border:0;background:none;color:var(--mu);cursor:pointer;font-size:16px}
+.win{font-weight:700;color:#15803d}
+.fi{border-top:1px solid var(--bd);margin-top:10px;padding-top:12px}
+.tl{background:var(--bg);border-radius:16px;padding:12px 8px;text-align:center}.tl b{display:block;font-size:20px;font-weight:800;letter-spacing:-.02em}.tl span{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.08em}
+.dial{width:64px;height:64px;border-radius:50%;margin:0 auto 6px;background:conic-gradient(var(--tx) calc(var(--p)*1%),#dcdcdc 0);display:grid;place-items:center;position:relative}.dial::before{content:"";position:absolute;inset:6px;background:var(--bg);border-radius:50%}.tl .dial b{display:inline;position:relative;font-size:13px}
+.fi i{display:inline-block;width:30px;height:30px;line-height:27px;text-align:center;border-radius:50%;font-style:normal;font-weight:700;margin-right:6px;border:1.5px solid var(--tx)}
+.cv{background:#16a34a;border-color:#16a34a;color:#fff}.cd{background:#dc2626;border-color:#dc2626;color:#fff}
+.pbar{height:5px;border-radius:99px;background:#e6e6e6;margin-top:7px;overflow:hidden}.pbar i{display:block;height:100%;background:var(--tx);border-radius:99px}
+.tb{width:100%;border-collapse:collapse;font-size:14px}.tb th{color:var(--mu);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em;text-align:right;padding:4px}.tb td{padding:7px 4px;text-align:right;border-top:1px solid var(--bd)}.tb th:nth-child(2),.tb td:nth-child(2){text-align:left}.tb td:first-child{color:var(--mu);width:22px;text-align:center}.up{color:#15803d;font-weight:700}.dn{color:#b91c1c;font-weight:700}
+.ib{width:16px;height:16px;border-radius:50%;border:1px solid var(--mu);background:none;color:var(--mu);font:600 11px/14px system-ui,sans-serif;text-align:center;padding:0;cursor:pointer;vertical-align:middle;margin-left:5px}
+.sum{background:var(--bg);border-left:3px solid var(--tx);padding:10px 12px;border-radius:12px;font-size:14px;margin:8px 0}
+summary{cursor:pointer;font-weight:600}
+</style></head><body><div class="w">
+<header><div class="circ">🎾</div><div class="pill" id="pt">Clasificación</div><div style="width:40px"></div></header>
+<div class="hero"><h1 id="ttl">Peña de Pádel</h1><div class="sub">Resultados y estadísticas · <span id="upd"></span></div></div>
+<nav id="nav"></nav><div id="bn"></div><div id="main"></div><div id="wz" style="display:none;position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)"></div>
+<div id="st" style="position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:8px 14px;border-radius:999px;font-size:13px;display:none;z-index:60"></div>
+</div>
+<script>
+const K='pena-padel-v2',$=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),fd=d=>d.split('-').reverse().join('/');
+const best=(arr,f)=>{let m=-Infinity,h=[];arr.forEach(x=>{const v=f(x);if(v>m){m=v;h=[x]}else if(v===m)h.push(x)});return{m,h}};
+let S,tab='clas',sortBy='pts',open=null,cur=null,jd=null,GH={},ADMIN=false,CAN=false,HS=null,ME=null,PEND=null,EDIT=null,WO=false,WZ=null,WS='list',WFIN=null,SUMBUSY=null,posF='';
+let DSIDE={};const pos=n=>DSIDE[n]||(S.players.find(p=>p.n===n)||{}).pos;
+const pair=(g,ix)=>{const s=[...g].sort((x,y)=>ix(x)-ix(y)),d=s.filter(n=>pos(n)==='D'),r=s.filter(n=>pos(n)==='R');
+ return d.length===2&&r.length===2?{a:[d[0],r[1]],b:[r[0],d[1]]}:{a:[s[0],s[3]],b:[s[1],s[2]]}};
+function suggest(day){DSIDE=day.side||{};const K=day.att.length/4,R=day.rounds[day.rounds.length-1],rk=[...stats(day.id).L].sort((a,b)=>b.pts-a.pts||b.ppm-a.ppm||(b.gf-b.gc)-(a.gf-a.gc)).map(p=>p.n).filter(n=>day.att.includes(n)),ix=n=>rk.indexOf(n);
+ if(!R){const ds=rk.filter(n=>pos(n)==='D'),rs=rk.filter(n=>pos(n)==='R');
+  return Array.from({length:K},(_,k)=>ds.length===2*K&&rs.length===2*K?pair([ds[2*k],ds[2*k+1],rs[2*k],rs[2*k+1]],ix):pair(rk.slice(k*4,k*4+4),ix))}
+ const W=R.map(m=>m[m.w]),L=R.map(m=>m[m.w==='a'?'b':'a']);
+ return R.map((_,k)=>pair([...(k?L[k-1]:W[0]),...(k<K-1?W[k+1]:L[k])],ix))}
+function stats(ex){const P={};S.players.forEach(p=>P[p.n]={n:p.n,pos:p.pos,off:p.off,ev:[],days:[],pj:0,pg:0,pp:0,gf:0,gc:0,r:0});
+ const D=[...S.days].filter(d=>d.id!==ex).sort((a,b)=>a.date.localeCompare(b.date)||a.id-b.id);
+ D.forEach((d,di)=>{d.att.forEach(n=>P[n]&&P[n].days.push(di));
+  d.rounds.forEach(R=>R.forEach(m=>{const av=t=>t.reduce((s,n)=>s+(P[n]?P[n].r:0),0)/2,ea=1/(1+Math.pow(10,(av(m.b)-av(m.a))/S.cfg.s)),da=Math.round(S.cfg.k*(.5+.5*Math.sign(m.ga-m.gb)*Math.pow(Math.abs(m.ga-m.gb)/(m.ga+m.gb+S.cfg.c),S.cfg.g)-ea));
+   [['a','b',m.ga,m.gb,da],['b','a',m.gb,m.ga,-da]].forEach(([s,o,f,c,dp])=>m[s].forEach(n=>{const p=P[n];if(!p)return;const w=m.w===s;
+   p.ev.push({w,f,c,dp,k:m.c,d:d.date,pa:m[s].find(x=>x!==n),ri:m[o]});p.pj++;w?p.pg++:p.pp++;p.gf+=f;p.gc+=c;p.r+=dp}))}))});
+ const L=Object.values(P),C=S.cfg;
+ L.forEach(p=>{p.pts=p.r;p.ppm=p.pj?p.pts/p.pj:0;p.pct=p.pj?p.pg/p.pj:0;
+  let c=0,b=0;p.ev.forEach(e=>{c=e.w?c+1:0;b=Math.max(b,c)});p.bw=b;
+  let i=p.ev.length-1,u=0;const lw=i>=0&&p.ev[i].w;while(i>=0&&p.ev[i].w===lw){u++;i--}p.cs=lw?u:-u;
+  p.nd=p.days.length;let a=0,ba=0,pr=-2;p.days.forEach(x=>{a=x===pr+1?a+1:1;ba=Math.max(ba,a);pr=x});p.bd=ba;p.cd=p.nd&&pr===D.length-1?a:0});
+ return{L,D,P,N:D.length}}
+function simRound(cs,str,r){const m=cs.map((c,i)=>({c:i+1,a:c.a,b:c.b,ga:0,gb:0})),s=p=>p.reduce((t,n)=>t+str[n],0);
+ while(!m.some(x=>x.ga>=7||x.gb>=7))m.forEach(x=>{r()<s(x.a)/(s(x.a)+s(x.b))?x.ga++:x.gb++});
+ m.forEach(x=>x.w=x.ga>x.gb?'a':x.gb>x.ga?'b':r()<.5?'a':'b');return m}
+function mkDemo(){const N=['Ana','Luis','Marta','Pablo','Sara','Dani','Eva','Raúl','Carla','Iván','Nuria','Toni','Lola','Hugo'],str={};
+ N.forEach((n,i)=>str[n]=17-i);let sd=7;const r=()=>{sd=sd+0x6D2B79F5|0;let t=Math.imul(sd^sd>>>15,1|sd);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+ S={name:'Peña de Pádel',demo:true,cfg:{k:335,s:3000,c:1.7,g:.5},players:N.map((n,i)=>({n,pos:i%2?'R':'D'})),days:[]};
+ ['2026-09-16','2026-09-23','2026-09-30','2026-10-07'].forEach((date,i)=>{const ex=[(i*3+1)%14,(i*5+4)%14],d={id:i+1,date,att:N.filter((_,j)=>!ex.includes(j)),rounds:[]};
+  S.days.push(d);for(let k=0;k<4;k++)d.rounds.push(simRound(suggest(d),str,r))})}
+
+const nk=s=>String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim().toLowerCase(),EMPTY=()=>({name:'Peña de Pádel',cfg:{k:335,s:3000,c:1.7,g:.5},players:[],days:[]}),norm=d=>{d.cfg=d.cfg&&d.cfg.c!=null?d.cfg:{k:335,s:3000,c:1.7,g:.5};d.players=d.players||[];d.days=d.days||[];return d};
+const toast=(t,ok)=>{const e=$('#st');e.textContent=t;e.style.display='block';clearTimeout(toast.h);if(ok)toast.h=setTimeout(()=>e.style.display='none',2500)};
+const b64=s=>{const b=new TextEncoder().encode(s);let x='';for(let i=0;i<b.length;i+=8192)x+=String.fromCharCode(...b.subarray(i,i+8192));return btoa(x)};
+const gh=(m,body,u='/contents/data.json')=>fetch('https://api.github.com/repos/'+GH.repo+u,{method:m,headers:{Authorization:'Bearer '+GH.tok,Accept:'application/vnd.github+json'},body:body&&JSON.stringify(body)});
+async function ghLoad(){const r=await gh('GET');if(r.status===404){GH.sha=null;return null}if(!r.ok)throw r.status;const j=await r.json();GH.sha=j.sha;return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g,'')),c=>c.charCodeAt(0))))}
+const guess=()=>location.hostname.endsWith('.github.io')?location.hostname.split('.')[0]+'/'+(location.pathname.split('/')[1]||''):'';
+let Q=Promise.resolve();
+const save=()=>{if(!ADMIN)return;Q=Q.then(async()=>{toast('Guardando…');const body=()=>({message:'Actualización '+new Date().toISOString().slice(0,16),content:b64(JSON.stringify(S)),sha:GH.sha||undefined});
+ try{let r=await gh('PUT',body());if(r.status===409||r.status===422){await ghLoad();r=await gh('PUT',body())}if(!r.ok)throw r.status;GH.sha=(await r.json()).content.sha;toast('✓ Guardado',1)}catch(e){toast('⚠ No se pudo guardar ('+e+')')}})},msg=t=>{const e=$('#msg');if(e)e.textContent=t};
+const opts=(a,s)=>'<option value="">—</option>'+a.map(n=>`<option ${n===s?'selected':''}>${esc(n)}</option>`).join('');
+function ficha(p,st){const ev=e=>e?`${e.f}–${e.c} (${e.dp>0?'+':''}${e.dp}) con ${esc(e.pa)} vs ${esc(e.ri.join(' y '))} · ${fd(e.d)}`:'—';
+ const bv=best(p.ev.filter(e=>e.w),e=>e.f-e.c).h[0],wd=best(p.ev.filter(e=>!e.w),e=>e.c-e.f).h[0],pt={},rv={};
+ p.ev.forEach(e=>{const o=pt[e.pa]=pt[e.pa]||{n:e.pa,j:0,g:0};o.j++;e.w&&o.g++;e.ri.forEach(x=>{const q=rv[x]=rv[x]||{n:x,j:0,g:0};q.j++;e.w&&q.g++})});
+ const bp=best(Object.values(pt).filter(o=>o.j>=2),o=>o.g/o.j+o.j/1000).h[0],br=best(Object.values(rv).filter(o=>o.j>=2),o=>-o.g/o.j+o.j/1000).h[0],f2=o=>o?esc(o.n)+' · '+o.g+' G – '+(o.j-o.g)+' P':'—',avg=p.ev.length?(p.ev.reduce((s,e)=>s+e.k,0)/p.ev.length).toFixed(1):'—';
+ const t=(a,b)=>`<div class="tl"><b>${b}</b><span>${a}</span></div>`;
+ return`<div class="fi"><div class="g2">${t('Puntos totales',p.pts)}${t('Pts por partido',Math.round(p.ppm))}${t('Victorias–Derrotas',p.pg+'–'+p.pp)}<div class="tl"><div class="dial" style="--p:${Math.round(p.pct*100)}"><b>${Math.round(p.pct*100)}%</b></div><span>% victorias</span></div>${t('Juegos a favor/contra',p.gf+'/'+p.gc)}${t('Partidos jugados',p.pj)}<div class="tl"><div class="dial" style="--p:${st.N?Math.round(p.nd/st.N*100):0}"><b>${p.nd}/${st.N}</b></div><span>Asistencia</span></div>${t('Racha de días',p.cd+' (mejor '+p.bd+')')}</div>
+ <p class="sub">Últimos 5 partidos</p><div>${p.ev.slice(-5).map(e=>`<i class="${e.w?'cv':'cd'}">${e.w?'V':'D'}</i>`).join('')||'—'}</div>
+ <p><span class="sub">Racha actual:</span> ${p.cs>0?'🔥 '+p.cs+' victorias':p.cs<0?-p.cs+' derrotas':'—'} · <span class="sub">mejor:</span> ${p.bw}</p>
+ <p><span class="sub">🏆 Mejor victoria:</span> ${ev(bv)}</p><p><span class="sub">💔 Peor derrota:</span> ${ev(wd)}</p>
+ <p><span class="sub">🤝 Mejor compañero:</span> ${f2(bp)}</p><p><span class="sub">😤 Rival más duro:</span> ${f2(br)}</p><p class="sub">Compañero y rival: mínimo 2 partidos. G–P = ganados–perdidos del jugador.</p></div>`}
+const editForm=m=>`<div class="card" style="background:var(--bg)"><div class="g2">${['a0','a1','b0','b1'].map(k=>`<select id="e${k}">${opts(S.players.map(p=>p.n),m[k[0]][+k[1]])}</select>`).join('')}<input type="number" min="0" inputmode="numeric" id="ega" value="${m.ga}"><input type="number" min="0" inputmode="numeric" id="egb" value="${m.gb}"></div><label>Ganador si hay empate</label><select id="ew"><option value="a" ${m.w==='a'?'selected':''}>Pareja A</option><option value="b" ${m.w==='b'?'selected':''}>Pareja B</option></select><div class="msg" id="msg"></div><div class="row"><button class="btn p" data-act="esave">Guardar</button><button class="btn" data-act="ecancel">Cancelar</button></div></div>`;
+const V={
+adm(){return (ADMIN?'<h2>🎾 Jornada</h2><div class="card"><button class="btn p" data-act="wopen">'+(live()?'▶ Continuar jornada':'▶ Comenzar jornada')+'</button></div>'+V.cfg()+'<button class="btn" data-act="adout">Cerrar sesión de admin</button>':V.gate())+CP()},
+gate(){return`<h2>🔧 Administración</h2><div class="card"><label>Repositorio (usuario/repo)</label><input id="gr" value="${esc(GH.repo||guess())}"><label style="display:block;margin-top:8px">Token de GitHub</label><input id="gt" type="password" autocomplete="off" placeholder="github_pat_…"><div class="msg" id="msg"></div><button class="btn p" data-act="adin">Entrar</button><p class="sub">El token se guarda solo en este dispositivo.</p></div>`},
+clas(st){const l=st.L.filter(p=>!p.off&&(!posF||p.pos===posF)).sort(sortBy==='pts'?(a,b)=>b.pts-a.pts||b.ppm-a.ppm||(b.gf-b.gc)-(a.gf-a.gc):(a,b)=>b.pct-a.pct||b.pj-a.pj);
+ return`<h2>🏆 Clasificación</h2><div class="row"><button class="btn ${sortBy==='pts'?'p':''}" data-act="sort" data-v="pts">Por puntos</button><button class="btn ${sortBy==='ppm'?'p':''}" data-act="sort" data-v="ppm">Por % victorias</button></div><div class="row" style="margin-top:6px">${[['','Todos'],['D','Drives'],['R','Revés']].map(([k,t])=>`<button class="btn ${posF===k?'p':''}" data-act="posf" data-v="${k}">${t}</button>`).join('')}</div>`+
+ l.map((p,i)=>`<div class="card ${i<3?'top':''}"><div class="row" data-act="open" data-v="${esc(p.n)}" style="cursor:pointer"><div class="rk">${i+1}</div><div class="grow"><div class="nm">${esc(p.n)} <span class="tg">${p.pos||'—'}</span> ${p.cs>=2?'🔥'+p.cs:''}</div><div class="sub">PJ ${p.pj} · G ${p.pg} · P ${p.pp} · ${p.nd} días</div><div class="pbar"><i style="width:${Math.round(p.pct*100)}%"></i></div></div><div class="pts">${p.pts}<small>PTS</small></div></div>${open===p.n?ficha(p,st):''}</div>`).join('')+
+ '<p class="sub">Toca un jugador para ver su ficha. Puntos tipo Elo (todos empiezan en 0). Pista 1: los 2 mejores Drives y los 2 mejores Revés; Pista 2: los siguientes; Pista 3: el resto.</p>'},
+rec(st){st={...st,L:st.L.filter(p=>!p.off)};const M=[];st.D.slice(2).forEach(d=>d.rounds.forEach(R=>R.forEach(m=>M.push({m,d}))));
+ const lab=x=>`${x.m[x.m.w].join(' y ')} ${Math.max(x.m.ga,x.m.gb)}–${Math.min(x.m.ga,x.m.gb)} (${fd(x.d.date)})`,n=p=>p.n;
+ const R=[['🏅','Más puntos',best(st.L,p=>p.pts),n,'pts'],['🎽','Más partidos jugados',best(st.L,p=>p.pj),n,'partidos'],['🔥','Mejor racha de victorias',best(st.L,p=>p.bw),n,'seguidas'],
+ ['📈','Mejor % de victorias (mín. 8 PJ)',best(st.L.filter(p=>p.pj>=8),p=>Math.round(p.pct*100)),n,'%'],['📅','Más días asistidos',best(st.L,p=>p.nd),n,'días'],['🔁','Mejor racha de asistencia',best(st.L,p=>p.bd),n,'días seguidos'],
+ ['💥','Victoria más abultada (sin las 2 primeras jornadas)',best(M,x=>Math.abs(x.m.ga-x.m.gb)),lab,'juegos de diferencia']];
+ return'<h2>👑 Récords</h2>'+R.map(([i,t,b,f,u])=>`<div class="card rec"><div class="sub">${i} ${t}</div>${b.h.length&&b.m>0?`<b>${b.m} ${u}</b> · ${b.h.map(x=>esc(f(x))).join(', ')}${b.h.length>1?' <span class="sub">(empate)</span>':''}`:'<span class="sub">Todavía nadie</span>'}</div>`).join('')},
+jor(st){const ds=[...st.D].reverse(),sel=ds.find(d=>d.id===jd)||ds[0];return'<h2>📅 Jornadas</h2>'+(ds.length?`<div style="display:flex;gap:6px;overflow-x:auto;padding-bottom:6px">${ds.map(d=>`<button class="btn ${d===sel?'p':''}" data-act="jday" data-v="${d.id}">${fd(d.date).slice(0,5)}</button>`).join('')}</div>`:'')+([sel].filter(Boolean).map(d=>{const w={};d.rounds.forEach(R=>R.forEach(m=>m[m.w].forEach(n=>w[n]=(w[n]||0)+1)));const mv=best(d.att,n=>w[n]||0).h;
+ const T=d.att.map(n=>{const ev=(st.P[n]||{ev:[]}).ev,e=ev.filter(x=>x.d===d.date);return{n,dp:e.reduce((s,x)=>s+x.dp,0),g:e.filter(x=>x.w).length,pj:e.length,tot:ev.filter(x=>x.d<=d.date).reduce((s,x)=>s+x.dp,0)}}).sort((a,b)=>b.dp-a.dp||b.g-a.g),
+ tbl=`<table class="tb"><tr><th>#</th><th>Jugador</th><th>G–P</th><th>Puntos del día</th><th>Total</th></tr>${T.map((x,i)=>`<tr><td>${i+1}</td><td>${esc(x.n)}</td><td>${x.g}–${x.pj-x.g}</td><td class="${x.dp>=0?'up':'dn'}">${x.dp>0?'+':''}${x.dp}</td><td>${x.tot}</td></tr>`).join('')}</table>`;
+ return`<div class="card"><div class="row"><b class="grow">${fd(d.date)} · ${d.att.length} jugadores${d.live?' · 🔴 en curso':''}</b>${ADMIN?`<button class="x" data-act="delday" data-v="${d.id}" aria-label="Borrar jornada">✕</button>`:''}</div>
+ <p class="sub" style="margin-top:8px">Clasificación del día</p>${tbl}${d.rounds.map((R,i)=>`<div class="sub" style="margin-top:6px">Ronda ${i+1} ${ADMIN?`<button class="x" data-act="delr" data-v="${d.id}:${i}" aria-label="Borrar ronda">✕</button>`:''}</div>`+R.map((m,j)=>EDIT===d.id+':'+i+':'+j?editForm(m):`<div class="row"><div class="grow"><span class="${m.w==='a'?'win':''}">${esc(m.a.join(' y '))}</span> <b>${m.ga}–${m.gb}</b> <span class="${m.w==='b'?'win':''}">${esc(m.b.join(' y '))}</span></div>${ADMIN?`<button class="x" data-act="edit" data-v="${d.id}:${i}:${j}" aria-label="Editar partido">✏️</button><button class="x" data-act="delm" data-v="${d.id}:${i}:${j}" aria-label="Borrar partido">✕</button>`:''}</div>`).join('')).join('')||'<p class="sub">Sin rondas.</p>'}
+ <p>⭐ Mejor del día: ${mv.map(esc).join(', ')} (${w[mv[0]]||0} victorias)</p>${d.resumen||(ADMIN&&!d.live)?`<details open style="margin-top:8px"><summary style="cursor:pointer;color:var(--ac);font-size:13px;font-weight:600">🎙️ Resumen de la jornada</summary>${d.resumen?`<p class="sum">${esc(d.resumen)}</p>`:'<p class="sub">Todavía no hay resumen.</p>'}${ADMIN&&!d.live?`<button class="btn" data-act="gsum" data-v="${d.id}">${d.resumen?'✏️ Editar resumen':'✏️ Añadir resumen'}</button>`:''}</details>`:''}</div>`}).join('')||'<p class="sub">Aún no hay jornadas.</p>')},
+reg(){const day=S.days.find(d=>d.id===cur),ds=[...S.days].sort((a,b)=>b.date.localeCompare(a.date));
+ let h=`<h2>➕ Registrar</h2><label>Jornada</label><select data-chg="dsel"><option value="">➕ Nueva jornada</option>${ds.map(d=>`<option value="${d.id}" ${d.id===cur?'selected':''}>${fd(d.date)}</option>`).join('')}</select>`;
+ if(!day&&PEND){DSIDE={};const nD=PEND.att.filter(n=>pos(n)==='D').length,nR=PEND.att.length-nD,lado=PEND.from==='D'?'drive':'revés',op=PEND.from==='D'?'revés':'drive';return h+`<div class="card"><p class="nm">⚖️ Lados desequilibrados</p><p class="sub">Hay ${nD} drives y ${nR} revés. Elige ${PEND.n} jugador${PEND.n>1?'es':''} de ${lado} que jugará${PEND.n>1?'n':''} hoy en el lado contrario (${op}).</p>${PEND.att.filter(n=>pos(n)===PEND.from).map(n=>`<label class="ckl"><input type="checkbox" class="sw" value="${esc(n)}"> ${esc(n)}</label>`).join('')}<div class="msg" id="msg"></div><div class="row"><button class="btn p" data-act="mk2">Crear jornada</button><button class="btn" data-act="mkx">Cancelar</button></div></div>`}
+ if(!day)return h+`<div class="card"><label>Fecha</label><input type="date" id="fd" value="${new Date().toISOString().slice(0,10)}"><p class="nm">¿Quién viene? (4, 8 o 12)</p>${S.players.filter(p=>!p.off).map(p=>`<label class="ckl"><input type="checkbox" class="ck" value="${esc(p.n)}"> ${esc(p.n)}</label>`).join('')}<div class="msg" id="msg"></div><button class="btn p" data-act="mk">Crear jornada</button></div>`;
+ const K=day.att.length/4,sg=suggest(day),nr=day.rounds.length+1;
+ h+=`<p class="sub">Ronda ${nr}: ${nr===1?'sugerida con la clasificación anterior a hoy':'sugerida con las subidas y bajadas y la clasificación anterior a hoy'}. Puedes cambiar lo que quieras.${day.side&&Object.keys(day.side).length?' Lado contrario hoy: '+Object.keys(day.side).map(esc).join(', ')+'.':''}</p>`;
+ for(let k=0;k<K;k++){const g=sg[k],q=[g.a[0],g.a[1],g.b[0],g.b[1]];
+  h+=`<div class="card"><p class="nm">Pista ${k+1}</p><div class="g2">${q.map((s,j)=>`<div><label>${j<2?'Pareja A':'Pareja B'}</label><select id="p${k}_${j}">${opts(day.att,s)}</select></div>`).join('')}
+  <div><label>Juegos A</label><input type="number" min="0" inputmode="numeric" id="g${k}_a"></div><div><label>Juegos B</label><input type="number" min="0" inputmode="numeric" id="g${k}_b"></div></div>
+  <label>Si hay empate, ¿quién sube?</label><select id="w${k}"><option value="">—</option><option value="A">Pareja A</option><option value="B">Pareja B</option></select></div>`}
+ return h+`<div class="msg" id="msg"></div><div class="row"><button class="btn p" data-act="rsave">Guardar ronda</button>${day.rounds.length?'<button class="btn" data-act="undo">Deshacer última</button>':''}</div>`},
+cfg(){return`<h2>⚙️ Ajustes</h2><div class="card"><label>Nombre de la peña</label><input id="pn" value="${esc(S.name)}">
+ <div class="g2" style="margin-top:8px"><div><label>K (puntos en juego)</label>${ib('k')}<input type="number" id="ck" min="50" max="1500" value="${S.cfg.k}"></div><div><label>Escala de nivel</label>${ib('s')}<input type="number" id="cs" min="500" max="20000" value="${S.cfg.s}"></div><div><label>Suavizado (c)</label>${ib('c')}<input type="number" step="0.1" id="cc" min="0.1" max="20" value="${S.cfg.c}"></div><div><label>Curva (γ)</label>${ib('g')}<input type="number" step="0.05" id="cg" min="0.3" max="2" value="${S.cfg.g}"></div></div><p class="sub">Entre parejas de igual nivel: 7–4 ≈ 80 puntos, 7–1 ≈ 131 y 7–0 ≈ 150. Un empate suma puntos a la pareja de menor nivel.</p>
+ <button class="btn" style="margin-top:8px" data-act="cfgsave">Guardar</button></div>
+ <div class="card"><label>Jugadores y posición (D = drive, R = revés)</label>${S.players.map(p=>`<div class="row" style="margin:4px 0"><input class="grow" style="${p.off?'opacity:.5':''}" data-chg="ren" data-v="${esc(p.n)}" value="${esc(p.n)}" aria-label="Nombre"><select style="width:90px" data-chg="pos" data-v="${esc(p.n)}"><option value="">—</option><option ${p.pos==='D'?'selected':''}>D</option><option ${p.pos==='R'?'selected':''}>R</option></select><button class="x" data-act="rmp" data-v="${esc(p.n)}" aria-label="Quitar o archivar">${p.off?'↺':'✕'}</button></div>`).join('')}
+ <div class="row" style="margin-top:8px"><input id="np" placeholder="Nuevo jugador"><select id="npos" style="width:90px"><option value="">—</option><option>D</option><option>R</option></select><button class="btn p" data-act="addp">Añadir</button></div></div>
+ <div class="card"><label>Copia de seguridad</label><textarea id="bk" rows="4"></textarea><div class="row" style="margin-top:8px"><button class="btn" data-act="exp">Exportar</button><button class="btn" data-act="imp">Importar</button></div></div>
+ <div class="card"><div class="row" style="flex-wrap:wrap"><button class="btn" data-act="reset">🗑️ Empezar de cero</button><button class="btn" data-act="demo">Cargar ejemplo</button></div></div>`}};
+const tabs=[['clas','🏆 Clasificación'],['rec','👑 Récords'],['jor','📅 Jornadas'],['reg','➕ Registrar'],['cfg','⚙️ Ajustes']];
+const live=()=>S.days.find(d=>d.live);
+function wsave(empt){const d=live(),ms=[];let ne=0;
+ for(let k=0;k<d.next.length;k++){const ga=$('#wa'+k).value,gb=$('#wb'+k).value,w=$('#ww'+k).value;
+  if(ga===''&&gb===''){ne++;continue}
+  if(ga===''||gb===''){msg('Falta un resultado en la pista '+(k+1)+'.');return 0}
+  if(+ga===+gb&&!w){msg('Empate en la pista '+(k+1)+': indica quién sube.');return 0}
+  ms.push({c:k+1,a:d.next[k].a,b:d.next[k].b,ga:+ga,gb:+gb,w:+ga>+gb?'a':+gb>+ga?'b':w==='A'?'a':'b'})}
+ if(ne&&ms.length){msg('Faltan los resultados de '+ne+' pista(s).');return 0}
+ if(!ms.length){if(empt)return 2;msg('Introduce los resultados.');return 0}
+ d.rounds.push(ms);return 1}
+function genSummary(id){const d=S.days.find(x=>x.id===id);if(!d)return;const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';o.innerHTML='<div class="card" style="max-width:420px;width:100%"><p class="nm">Resumen de la jornada</p><textarea id="rs" rows="7" placeholder="Pega aquí el resumen…"></textarea><div class="row" style="margin-top:8px"><button class="btn p" id="rg">Guardar</button><button class="btn" id="rc">Cancelar</button></div></div>';document.body.appendChild(o);o.querySelector('#rs').value=d.resumen||'';o.querySelector('#rc').onclick=()=>o.remove();o.querySelector('#rg').onclick=()=>{const v=o.querySelector('#rs').value.trim();if(v)d.resumen=v;else delete d.resumen;o.remove();save();render()}}
+function Wv(){const d=live(),head=t=>`<div class="row"><h2 class="grow" style="margin:0">${t}</h2><button class="x" data-act="wclose" aria-label="Cerrar">✕</button></div>`;
+ if(WFIN){const f=S.days.find(x=>x.id===WFIN)||{};return`<div class="w">${head('✅ Jornada terminada')}<div class="card"><p>${SUMBUSY===WFIN?'✨ Generando el resumen…':f.resumen?'🎙️ '+esc(f.resumen):'Puedes añadir el resumen desde Jornadas.'}</p></div><button class="btn p" data-act="wclose">Cerrar</button></div>`}
+ if(!d){
+  if(WZ&&WZ.mode==='side'){DSIDE={};const nD=WZ.att.filter(n=>pos(n)==='D').length,nR=WZ.att.length-nD,lado=WZ.from==='D'?'drive':'revés',op=WZ.from==='D'?'revés':'drive';
+   return`<div class="w">${head('⚖️ Lados desequilibrados')}<div class="card"><p class="sub">Hay ${nD} drives y ${nR} revés. Elige ${WZ.n} jugador${WZ.n>1?'es':''} de ${lado} que jugará${WZ.n>1?'n':''} hoy en el lado contrario (${op}).</p>${WZ.att.filter(n=>pos(n)===WZ.from).map(n=>`<label class="ckl"><input type="checkbox" class="sw" value="${esc(n)}"> ${esc(n)}</label>`).join('')}<div class="msg" id="msg"></div><div class="row"><button class="btn p" data-act="wsd">Siguiente</button><button class="btn" data-act="wback">Atrás</button></div></div></div>`}
+  return`<div class="w">${head('🎾 Comenzar jornada')}<div class="card"><label>Fecha</label><input type="date" id="fd" value="${WZ&&WZ.date||new Date().toISOString().slice(0,10)}"><p class="nm">¿Quién viene? (4, 8 o 12)</p>${S.players.filter(p=>!p.off).map(p=>`<label class="ckl"><input type="checkbox" class="ck" value="${esc(p.n)}" ${WZ&&WZ.att&&WZ.att.includes(p.n)?'checked':''}> ${esc(p.n)} <span class="tg">${p.pos||'—'}</span></label>`).join('')}<div class="msg" id="msg"></div><button class="btn p" data-act="wnext0">Siguiente</button></div></div>`}
+ const n=d.rounds.length+1;
+ if(WS==='res')return`<div class="w">${head('📝 Resultados · Ronda '+n)}${d.next.map((m,k)=>`<div class="card"><p class="nm">Pista ${k+1}</p><p>${esc(m.a.join(' + '))} <span class="sub">vs</span> ${esc(m.b.join(' + '))}</p><div class="g2"><input type="number" min="0" inputmode="numeric" id="wa${k}" placeholder="Juegos pareja A"><input type="number" min="0" inputmode="numeric" id="wb${k}" placeholder="Juegos pareja B"></div><label>Si hay empate, ¿quién sube?</label><select id="ww${k}"><option value="">—</option><option value="A">Pareja A</option><option value="B">Pareja B</option></select></div>`).join('')}<div class="msg" id="msg"></div><div class="row"><button class="btn p" data-act="wnr">Siguiente ronda</button><button class="btn" data-act="wfin">Terminar jornada</button></div><p><button class="btn" data-act="wlist">← Ver listado</button></p></div>`;
+ const txt=`🎾 *${S.name}* · Jornada ${fd(d.date)} · Ronda ${n}\n\n`+d.next.map((m,k)=>`*Pista ${k+1}:* ${m.a.join(' + ')}  🆚  ${m.b.join(' + ')}`).join('\n');
+ return`<div class="w">${head('📋 Ronda '+n+' · Jornada '+fd(d.date))}<div class="card"><textarea id="wtx" readonly rows="${d.next.length*2+3}">${esc(txt)}</textarea><div class="row" style="margin-top:8px"><button class="btn p" data-act="wcopy">📋 Copiar</button><a class="btn" target="_blank" rel="noopener" href="https://wa.me/?text=${encodeURIComponent(txt)}">WhatsApp</a></div><div class="sub" id="wm"></div></div><button class="btn p" data-act="wres">Siguiente</button></div>`}
+const CP=()=>'<p class="sub" style="text-align:center;margin-top:28px;font-size:12px">© 2026 '+esc(S.name)+'. Todos los derechos reservados.</p>';
+const ICON={clas:'<svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>',rec:'<svg viewBox="0 0 24 24"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9z"/></svg>',jor:'<svg viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></svg>',adm:'<svg viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>'},H2=/(<h2[^>]*>)[^<A-Za-zÁ-ú]+/g,NL=t=>t.replace(/^[^A-Za-zÁ-ú]+/,'');
+const TB=()=>[['clas','🏆 Clasificación'],['rec','👑 Récords'],['jor','📅 Jornadas'],['adm','🔧 Admin']];
+function render(){if(!S){$('#main').innerHTML='<p class="sub" style="text-align:center">Cargando…</p>';return}const st=stats(),l=[...st.D].pop();$('#ttl').textContent=S.name;document.title=S.name+' — Resultados y Estadísticas';
+ $('#upd').textContent=l?'Última jornada '+fd(l.date):'Sin jornadas';
+ $('#nav').innerHTML=TB().map(([k,t])=>`<button class="${k===tab?'on':''}" data-act="tab" data-v="${k}"><span class="ic">${ICON[k]}</span><span>${NL(t)}</span></button>`).join('');const pt=$('#pt');if(pt)pt.textContent=NL((TB().find(x=>x[0]===tab)||[0,''])[1]);
+ $('#bn').innerHTML=(ADMIN?'<div class="sub" style="text-align:center">🔧 Modo administrador</div>':'')+(S.demo?'<div class="bn">Datos de ejemplo. El administrador puede borrarlos en Admin → Ajustes con «Empezar de cero» para usar tu peña.</div>':'');
+ $('#main').innerHTML=V[tab](st).replace(H2,'$1');const wz=$('#wz');if(ADMIN&&WO){wz.style.display='block';wz.innerHTML=Wv().replace(H2,'$1');wz.scrollTop=0}else{wz.style.display='none';wz.innerHTML=''}}
+function ask(t,fn){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';o.innerHTML='<div class="card" style="max-width:340px;width:100%"><p class="nm">'+esc(t)+'</p><div class="row">'+(fn?'<button class="btn p" id="cy">Sí, continuar</button><button class="btn" id="cn">Cancelar</button>':'<button class="btn p" id="cn">Aceptar</button>')+'</div></div>';document.body.appendChild(o);o.querySelector('#cn').onclick=()=>o.remove();if(fn)o.querySelector('#cy').onclick=()=>{o.remove();fn()}}
+const INFO={k:['K · puntos en juego','Tamaño de los movimientos: lo máximo que puede cambiar la puntuación en un partido. Rango permitido: de 50 a 1500 (por defecto 335; recomendado 250–500). Si lo subes, todos suben y bajan más deprisa; si lo bajas, la clasificación se mueve más despacio. No cambia quién gana más que quién, solo cuánto vale cada partido.'],s:['Escala de nivel','Cuánto pesa la diferencia de nivel entre las dos parejas. Rango permitido: de 500 a 20000 (por defecto 3000; recomendado 2000–5000). Cuanto más pequeña, más importa el nivel: ganar a una pareja mucho mejor da muchos puntos y perder contra ella resta poco. Con 500 el nivel es casi decisivo; con 20000 apenas cuenta.'],c:['Suavizado (c)','Evita que los marcadores con pocos juegos parezcan palizas, por ejemplo un 1–0 cuando se para el partido. Rango permitido: de 0,1 a 20 (por defecto 1,7; recomendado 1–3). Cuanto más alto, menos pesan los marcadores cortos.'],g:['Curva (γ)','Controla cómo se valoran las goleadas. Rango permitido: de 0,3 a 2 (por defecto 0,5; recomendado 0,4–1). Con valores bajos, ganar por mucho vale solo un poco más que ganar por poco; con 1, el valor crece en proporción a la diferencia de juegos; por encima de 1, las goleadas se premian aún más.']};
+const ib=k=>`<button class="ib" data-act="info" data-v="${k}" aria-label="Información">i</button>`;
+function inf(t,x){const o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';o.innerHTML='<div class="card" style="max-width:360px;width:100%"><p class="nm">'+esc(t)+'</p><p style="font-size:14px;line-height:1.45">'+esc(x)+'</p><button class="btn p" id="cn">Entendido</button></div>';document.body.appendChild(o);o.onclick=e=>{if(e.target===o||e.target.id==='cn')o.remove()}}
+window.alert=t=>ask(t);
+const A={tab(v){tab=v;render();scrollTo(0,0)},
+ wopen(){WO=true;WFIN=null;const d=live();if(d){if(!d.next){d.next=suggest(d);save()}WS='list'}else WZ=WZ||{mode:'sel'};render()},
+ wclose(){WO=false;WZ=null;WFIN=null;render()},
+ wback(){WZ.mode='sel';render()},
+ wnext0(){DSIDE={};const date=$('#fd').value,att=[...document.querySelectorAll('.ck:checked')].map(x=>x.value);WZ={mode:'sel',date,att};
+  if(!date||att.length%4||att.length<4||att.length>12)return msg('Elige 4, 8 o 12 jugadores.');
+  if(att.some(n=>!pos(n)))return msg('Falta asignar posición (D/R) en Ajustes.');
+  const nd=att.filter(n=>pos(n)==='D').length,need=att.length/2;
+  if(nd!==need){WZ={mode:'side',date,att,from:nd>need?'D':'R',n:Math.abs(nd-need)};return render()}
+  A.wcreate(date,att,{})},
+ wsd(){const sw=[...document.querySelectorAll('.sw:checked')].map(x=>x.value);if(sw.length!==WZ.n)return msg('Elige exactamente '+WZ.n+'.');const o=WZ.from==='D'?'R':'D',side={};sw.forEach(n=>side[n]=o);A.wcreate(WZ.date,WZ.att,side)},
+ wcreate(date,att,side){const d={id:Date.now(),date,att,rounds:[],live:true};if(Object.keys(side).length)d.side=side;S.days.push(d);d.next=suggest(d);WZ=null;WS='list';save();render()},
+ wres(){WS='res';render()},wlist(){WS='list';render()},
+ wnr(){const d=live();if(!wsave(0))return;d.next=suggest(d);WS='list';save();render()},
+ wfin(){const d=live(),r=wsave(1);if(!r)return;if(!d.rounds.length){S.days=S.days.filter(x=>x!==d);WO=false;save();render();return}d.live=false;delete d.next;WFIN=d.id;save();render()},
+ gsum(v){genSummary(+v)},
+ wcopy(){const t=$('#wtx');t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value).catch(()=>{});$('#wm').textContent='✓ Copiado. Si no se copia, mantén pulsado el texto.'},
+ async adin(){const repo=$('#gr').value.trim(),tok=$('#gt').value.trim();if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!tok)return msg('Rellena repositorio y token.');GH={repo,tok};
+  try{const r=await gh('GET',null,''),j=await r.json();if(!r.ok||!j.permissions||!j.permissions.push)throw 'sin permiso de escritura';const d=await ghLoad();if(d)S=norm(d);ADMIN=true;try{localStorage.setItem('pena-gh',JSON.stringify({repo,tok}))}catch(e){}tab='adm';render()}catch(e){GH={};msg('Token o repositorio no válidos ('+e+').')}},
+ adout(){ADMIN=false;GH={};try{localStorage.removeItem('pena-gh')}catch(e){}tab='clas';render()},
+ delr(v){const [id,i]=v.split(':'),d=S.days.find(x=>x.id==id);if(d)ask('¿Borrar esta ronda?',()=>{d.rounds.splice(+i,1);save();render()})},
+ ren(v,n,t){if(!n||n===v||S.players.some(p=>p.n===n)){if(t)t.value=v;return}S.players.find(p=>p.n===v).n=n;const f=a=>a.map(x=>x===v?n:x);S.days.forEach(d=>{d.att=f(d.att);d.rounds.forEach(R=>R.forEach(m=>{m.a=f(m.a);m.b=f(m.b)}))});if(ME===v)ME=n;save();render()},sort(v){sortBy=v;render()},posf(v){posF=v;open=null;render()},info(v){inf(INFO[v][0],INFO[v][1])},open(v){open=open===v?null:v;render()},
+ mk(){DSIDE={};const date=$('#fd').value,att=[...document.querySelectorAll('.ck:checked')].map(x=>x.value);
+  if(!date||att.length%4||att.length<4||att.length>12)return msg('Elige 4, 8 o 12 jugadores.');
+  if(att.some(n=>!pos(n)))return msg('Falta asignar posición (D/R) en Ajustes.');
+  const nd=att.filter(n=>pos(n)==='D').length,need=att.length/2;if(nd!==need){PEND={date,att,from:nd>need?'D':'R',n:Math.abs(nd-need)};return render()}
+  A.mkDay(date,att,{})},
+ mkDay(date,att,side){const d={id:Date.now(),date,att,rounds:[]};if(Object.keys(side).length)d.side=side;S.days.push(d);cur=d.id;PEND=null;save();render()},
+ mk2(){const sw=[...document.querySelectorAll('.sw:checked')].map(x=>x.value);if(sw.length!==PEND.n)return msg('Elige exactamente '+PEND.n+'.');const o=PEND.from==='D'?'R':'D',side={};sw.forEach(n=>side[n]=o);A.mkDay(PEND.date,PEND.att,side)},
+ mkx(){PEND=null;render()},
+ edit(v){EDIT=v;render()},ecancel(){EDIT=null;render()},
+ esave(){const[id,i,j]=EDIT.split(':'),d=S.days.find(x=>x.id==id),m=d.rounds[+i][+j],g=k=>$('#e'+k).value,ps=[g('a0'),g('a1'),g('b0'),g('b1')],ga=g('ga'),gb=g('gb');
+  if(ps.some(x=>!x)||new Set(ps).size<4)return msg('Elige 4 jugadores distintos.');if(ga===''||gb==='')return msg('Falta el resultado.');
+  m.a=[ps[0],ps[1]];m.b=[ps[2],ps[3]];m.ga=+ga;m.gb=+gb;m.w=+ga>+gb?'a':+gb>+ga?'b':g('w');
+  d.att=[...new Set(d.rounds.flat().flatMap(x=>[...x.a,...x.b]))];EDIT=null;save();render()},
+ delm(v){const[id,i,j]=v.split(':'),d=S.days.find(x=>x.id==id);if(d)ask('¿Borrar este partido?',()=>{d.rounds[+i].splice(+j,1);if(!d.rounds[+i].length)d.rounds.splice(+i,1);if(d.rounds.length)d.att=[...new Set(d.rounds.flat().flatMap(x=>[...x.a,...x.b]))];save();render()})},
+ rsave(){const d=S.days.find(x=>x.id===cur),K=d.att.length/4,ms=[],all=[];
+  for(let k=0;k<K;k++){const p=[0,1,2,3].map(j=>$('#p'+k+'_'+j).value),ga=$('#g'+k+'_a').value,gb=$('#g'+k+'_b').value,w=$('#w'+k).value;all.push(...p);
+   if(ga===''||gb==='')return msg('Falta el resultado de la pista '+(k+1)+'.');
+   if(+ga===+gb&&!w)return msg('Empate en la pista '+(k+1)+': indica quién sube.');
+   ms.push({c:k+1,a:[p[0],p[1]],b:[p[2],p[3]],ga:+ga,gb:+gb,w:+ga>+gb?'a':+gb>+ga?'b':w==='A'?'a':'b'})}
+  if(all.some(x=>!x)||new Set(all).size!==all.length)return msg('Cada jugador debe aparecer una sola vez.');
+  d.rounds.push(ms);save();render();scrollTo(0,0)},
+ undo(){const d=S.days.find(x=>x.id===cur);if(d)ask('¿Quitar la última ronda?',()=>{d.rounds.pop();save();render()})},
+ delday(v){ask('¿Borrar esta jornada?',()=>{S.days=S.days.filter(d=>d.id!=v);if(cur==v)cur=null;save();render()})},
+ cfgsave(){S.name=$('#pn').value.trim()||'Peña de Pádel';const cl=(v,a,b,d)=>Math.min(b,Math.max(a,+v||d));S.cfg={k:cl($('#ck').value,50,1500,335),s:cl($('#cs').value,500,20000,3000),c:cl($('#cc').value,.1,20,1.7),g:cl($('#cg').value,.3,2,.5)};save();render()},
+ addp(){const n=$('#np').value.trim();if(!n||S.players.some(p=>p.n===n))return;S.players.push({n,pos:$('#npos').value});save();render()},
+ rmp(v){const p=S.players.find(x=>x.n===v);if(!p)return;if(S.days.some(d=>d.att.includes(v))){if(p.off){p.off=false;save();render()}else ask(v+' tiene partidos jugados. Se archivará: sale de la clasificación pero se conserva su historial.',()=>{p.off=true;save();render()});return}ask('¿Eliminar a '+v+'?',()=>{S.players=S.players.filter(x=>x.n!==v);save();render()})},
+ exp(){$('#bk').value=JSON.stringify(S)},
+ imp(){try{const d=JSON.parse($('#bk').value);if(!d.players||!d.days)throw 0;S=d;if(!S.cfg||S.cfg.c==null)S.cfg={k:335,s:3000,c:1.7,g:.5};save();render()}catch(e){alert('Copia no válida.')}},
+ reset(){ask('Se borrarán jugadores y jornadas. ¿Seguro?',()=>{S={name:S.name,cfg:S.cfg,players:[],days:[]};cur=null;save();render()})},
+ demo(){ask('Se sustituirán tus datos por el ejemplo. ¿Seguro?',()=>{mkDemo();cur=null;save();render()})}};
+document.addEventListener('click',e=>{const t=e.target.closest('[data-act]');if(t&&A[t.dataset.act])A[t.dataset.act](t.dataset.v)});
+document.addEventListener('change',e=>{const t=e.target.closest('[data-chg]');if(!t)return;
+ if(t.dataset.chg==='dsel'){cur=t.value?+t.value:null;render()}
+ if(t.dataset.chg==='ren')A.ren(t.dataset.v,t.value.trim(),t);
+ if(t.dataset.chg==='pos'){const p=S.players.find(x=>x.n===t.dataset.v);if(p){p.pos=t.value;save()}}});
+render();
+(async()=>{let g=null;try{g=JSON.parse(localStorage.getItem('pena-gh'))}catch(e){}
+ if(g&&g.tok){GH=g;try{S=norm((await ghLoad())||EMPTY());ADMIN=true}catch(e){GH={};try{localStorage.removeItem('pena-gh')}catch(x){}}}
+ if(!S){try{const r=await fetch('data.json?'+Date.now());S=r.ok?norm(await r.json()):EMPTY()}catch(e){S=EMPTY()}}
+ render()})();
+</script></body></html>
