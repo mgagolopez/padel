@@ -21,7 +21,7 @@ Clasificación, fichas de jugador, récords y jornadas. Los datos viven en `data
 - Nunca subas el token al repositorio ni lo compartas por canales públicos: da permiso de escritura.
 - Con un repositorio público, cualquiera con el enlace puede ver nombres y resultados.
 - El resumen de cada jornada ya no se genera solo: el administrador lo pega con «Añadir resumen» en la pestaña Jornadas.
-- `data.json` ya incluye las 6 jornadas, los 17 jugadores y los ajustes del algoritmo.
+- `data.json` ya incluye las 7 jornadas disputadas hasta el 15/10/2026, los 17 jugadores y los ajustes del algoritmo (escala 1300).
 
 ## Copyright
 
