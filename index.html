@@ -84,7 +84,7 @@ summary{cursor:pointer;font-weight:600}
 .rg{display:grid;grid-template-columns:1fr 1fr;gap:8px}.rg .card{margin:0;padding:10px 12px}.rec .rn{font-size:13px;margin-top:3px;word-break:break-word}.rec.ph{border-style:dashed;background:transparent}.rec b{font-size:20px}
 .low{background:#e6e6e6;border-color:#d6d6d6}.low .nm,.low .pts{color:#666}.low .pbar i{background:#888}
 .sv{width:1.15em;height:1.15em;vertical-align:-.2em;display:inline-block}.crz{color:#dc2626;font-weight:900}.er{display:flex;gap:6px;align-items:center;margin:6px 0}.er b{width:24px;flex:none}.er select{flex:1;min-width:0}.er input{width:58px;flex:none}.pcw{display:flex;align-items:center;justify-content:center;gap:20px;width:100%;margin-top:4px}.pie{width:66px;height:66px;border-radius:50%;flex:none}.pc .pp{display:block;font-style:normal;font-size:11px;color:var(--mu);margin-top:1px}.pc .dt{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}.ptb{margin:6px 0 4px}.ptb .tb{width:100%}
-.dl{font-size:11px;font-weight:700;line-height:1;margin-top:3px}.dl.u{color:#16a34a}.dl.d{color:#dc2626}.dl.e{color:#eab308}.rtt{font-weight:800;color:var(--tx);font-size:14px}.rcm{font-size:11px;margin:1px 0 4px}.bx.lg{position:relative}.lgc{position:absolute;top:5px;right:7px;background:#111;color:#fff;border-radius:10px;font-size:11px;font-weight:700;padding:0 6px}
+.dl{font-size:11px;font-weight:700;line-height:1;margin-top:3px}.dl.u{color:#16a34a}.dl.d{color:#dc2626}.dl.e{color:#eab308}.rtt{font-weight:800;color:var(--tx);font-size:14px}.rcm{font-size:11px;margin:1px 0 4px}.bx.lg{position:relative}.bx.lg.ck{cursor:pointer}.bx.lg.n2{padding-bottom:24px}.lgc{position:absolute;bottom:5px;right:7px;background:#111;color:#fff;border-radius:10px;font-size:11px;font-weight:700;padding:0 6px}
 .rcc{margin-top:10px;border-top:1px solid var(--bd)}.rcc p:not(.hd){font-size:13px;margin:5px 0}.kv b{text-align:right;font-weight:600}
 </style></head><body><div class="w">
 <header><svg viewBox="0 0 24 24" role="img" aria-label="Escudo"><path d="M12 1.8 21 5v7.2c0 5.1-3.8 8.6-9 10-5.2-1.4-9-4.9-9-10V5z" fill="#111"/><circle cx="12" cy="11.6" r="5.6" fill="#fff"/><path d="M7.3 8.9c2.7 1.7 2.7 4.7 0 6.5M16.7 8.9c-2.7 1.7-2.7 4.7 0 6.5" fill="none" stroke="#111" stroke-width="1.1" stroke-linecap="round"/></svg><h1 id="ttl">Peña de Pádel</h1></header>
@@ -197,26 +197,31 @@ function recChanges(d){const D=[...S.days].sort((a,b)=>a.date.localeCompare(b.da
   else out.push(tx+(mejor?`${nn.join(', ')} ${pl(nn,'supera','superan')} a ${pn.join(', ')} (${v(pr.m)} → ${v(q.m)})`:`${nn.join(', ')} ${pl(nn,'releva','relevan')} a ${pn.join(', ')} como titular (${v(q.m)}; antes ${v(pr.m)})`))});
  return out}
 const recBlock=d=>{const a=recChanges(d);return a.length?'<div class="rcc"><p class="hd">🏆 Cambios de récords</p>'+a.map(x=>`<p>${esc(x)}</p>`).join('')+'</div>':''};
+const LGD={};
+function lgModal(k){const g=LGD[k];if(!g)return;const n=k.slice(0,k.lastIndexOf(':')),o=document.createElement('div');o.style.cssText='position:fixed;inset:0;background:rgba(15,23,42,.45);display:flex;align-items:center;justify-content:center;z-index:99;padding:20px';
+ o.innerHTML=`<div class="card" style="max-width:380px;width:100%;max-height:80vh;overflow:auto"><p class="nm" style="font-size:16px">${icH(g.ic)} ${g.t}</p><p class="sub">${esc(n)} · conseguido ${g.L.length} ${g.L.length===1?'vez':'veces'}</p>${g.L.map(x=>`<div class="kv" style="display:block"><b>${fd(x.d)}</b>${x.ev.map(e=>`<div class="sub" style="margin-top:3px">Ronda ${e.ro+1}${e.rp?' · P'+e.k:''}: ${e.f}-${e.c} con ${esc(e.pa)} vs ${esc(e.ri.join(' y '))} <span class="${e.w?'up':'dn'}">${e.w?'V':'D'}</span>${e.w&&(e.m.a.includes(n)?e.pe:100-e.pe)<40?' · '+(e.m.a.includes(n)?e.pe:100-e.pe)+' %':''}</div>`).join('')}</div>`).join('')}<button class="btn p" id="cn" style="margin-top:10px">Cerrar</button></div>`;
+ document.body.appendChild(o);o.onclick=e=>{if(e.target===o||e.target.id==='cn')o.remove()}}
 function logros(p,st){const byD={};p.ev.forEach(e=>(byD[e.d]=byD[e.d]||[]).push(e));
- const fday=f=>{let r=null;Object.keys(byD).sort().forEach(d=>{if(!r&&f(byD[d]))r=d});return r},
- seq=(a,ks,res)=>{for(let i=0;i+ks.length<=a.length;i++)if(ks.every((k,j)=>a[i+j].rp&&a[i+j].k===k&&a[i+j].ro===a[i].ro+j&&a[i+j].w===res))return true;return false},
+ const dlist=f=>Object.keys(byD).sort().map(d=>({d,ev:f(byD[d])||[]})).filter(x=>x.ev.length),
+ seq=(a,ks,res)=>{for(let i=0;i+ks.length<=a.length;i++)if(ks.every((k,j)=>a[i+j].rp&&a[i+j].k===k&&a[i+j].ro===a[i].ro+j&&a[i+j].w===res))return a.slice(i,i+ks.length);return[]},
  sb=sombra(p),dP1=Object.keys(byD).sort().filter(d=>byD[d].some(e=>e.rp&&e.k===1)),p1=p.ev.filter(e=>e.rp&&e.k===1),N=st.D.length;
  let ll=null;for(let i=19;i<N;i++){if(p.days.filter(x=>x<=i).length/(i+1)>=.8){ll=st.D[i].date;break}}
  const mv=(S.mvp&&S.mvp[p.n])|0,
- ind=[['⛱️','Sombrilla y nevera','No sale de la pista 1: ganas todos tus partidos en P1 en un día',sb.dt,sb.txt],
-  ['⛰️','Escalador','De P3 a P1 del tirón (ganas en P3, P2 y P1 seguidas)',fday(a=>seq(a,[3,2,1],true)),'Pendiente'],
-  ['🛝','Aquaola','De P1 a P3 de cabeza (pierdes en P1, P2 y P3 seguidas)',fday(a=>seq(a,[1,2,3],false)),'Pendiente'],
-  ['📣','Sobre la bocina','Ganas in extremis 7-6',fday(a=>a.some(e=>e.w&&e.f===7&&e.c===6)),'Pendiente'],
-  ['🎤','El “cantaor”','Cantas 2 veces el mismo día',fday(a=>a.filter(e=>e.w&&e.f===7).length>=2),'Pendiente'],
-  ['@shotgun','El matagigantes','Ganas con <40 % de posibilidades',fday(a=>a.some(e=>e.w&&(e.m.a.includes(p.n)?e.pe:100-e.pe)<40)),'Pendiente'],
-  ['@anemo','El veleta','Victoria y derrota con el mismo compi el mismo día',fday(a=>a.some(x=>a.some(y=>y!==x&&y.pa===x.pa&&y.w!==x.w))),'Pendiente']],
+ pr=e=>e.m.a.includes(p.n)?e.pe:100-e.pe,
+ ind=[['⛱️','Sombrilla y nevera','No sale de la pista 1: ganas todos tus partidos en P1 en un día',dlist(a=>a.every(e=>e.rp)&&!a.some(e=>e.lv)&&a.length>=3&&a.every(e=>e.k===1&&e.w)?a:0),sb.txt],
+  ['⛰️','Escalador','De P3 a P1 del tirón (ganas en P3, P2 y P1 seguidas)',dlist(a=>seq(a,[3,2,1],true)),'Pendiente'],
+  ['🛝','Aquaola','De P1 a P3 de cabeza (pierdes en P1, P2 y P3 seguidas)',dlist(a=>seq(a,[1,2,3],false)),'Pendiente'],
+  ['📣','Sobre la bocina','Ganas in extremis 7-6',dlist(a=>a.filter(e=>e.w&&e.f===7&&e.c===6)),'Pendiente'],
+  ['🎤','El “cantaor”','Cantas 2 veces el mismo día',dlist(a=>{const w=a.filter(e=>e.w&&e.f===7);return w.length>=2?w:0}),'Pendiente'],
+  ['@shotgun','El matagigantes','Ganas con <40 % de posibilidades',dlist(a=>a.filter(e=>e.w&&pr(e)<40)),'Pendiente'],
+  ['@anemo','El veleta','Victoria y derrota con el mismo compi el mismo día',dlist(a=>a.filter(x=>a.some(y=>y!==x&&y.pa===x.pa&&y.w!==x.w))),'Pendiente']].map(([ic,t,d,L,tx],i)=>{LGD[p.n+':'+i]={ic,t,L};return[ic,t,d,L.length?L[L.length-1].d:null,tx,L.length,p.n+':'+i]}),
  acc=[['👍','Intratable','5 victorias seguidas',streakDate(p,5),'Tu máximo: '+p.bw],
   ['💪','El puto amo','10 victorias seguidas',streakDate(p,10),'Tu máximo: '+p.bw],
   ['🎓','Cum laude','Acumulas 100 partidos en P1',p1.length>=100?p1[99].d:null,p1.length+'/100'],
   ['👋','El asiduo','Acumulas 25 jornadas jugando en P1 al menos una ronda',dP1.length>=25?dP1[24]:null,dP1.length+'/25'],
   ['🚗','Llueva o nieve','Vienes al menos el 80 % de los días (desde 20 jornadas)',ll,N<20?'Se mide desde la jornada 20 ('+N+'/20)':p.nd+'/'+N+' jornadas ('+Math.round(100*p.nd/N)+' %)'],
   ['✌️','MVP del mes','Votado por el grupo',mv>0?'mvp':null,'Pendiente de votación',mv]],
- card=([ic,t,d,dt,tx,c])=>`<div class="bx lg${dt?' on':''}">${c>0?`<span class="lgc">×${c}</span>`:''}<div class="lgi">${icH(ic)}</div><div class="lgt">${t}</div><div class="lgd">${d}</div><div class="lge">${dt==='mvp'?'Votado '+c+(c>1?' veces':' vez'):dt?'Conseguido el '+fd(dt):tx}</div></div>`;
+ card=([ic,t,d,dt,tx,c,key])=>`<div class="bx lg${dt?' on':''}${key&&dt?' ck':''}${c>1||(dt==='mvp'&&c>0)?' n2':''}"${key&&dt?` data-act="lgo" data-v="${esc(key)}" role="button"`:''}>${c>1||(dt==='mvp'&&c>0)?`<span class="lgc">×${c}</span>`:''}<div class="lgi">${icH(ic)}</div><div class="lgt">${t}</div><div class="lgd">${d}</div><div class="lge">${dt==='mvp'?'Votado '+c+(c>1?' veces':' vez'):dt?(key&&c>1?'Última vez: ':'Conseguido el ')+fd(dt):tx}</div></div>`;
  return`<p class="hd">Logros</p><div class="bk" style="margin-top:0">${ind.map(card).join('')}</div><p class="hd">Logros por acumulación</p><div class="bk" style="margin-top:0">${acc.map(card).join('')}</div>`}
 function ficha(p,st){const ev=e=>e?`${e.f}–${e.c} (${e.dp>0?'+':''}${e.dp}) con ${esc(e.pa)} vs ${esc(e.ri.join(' y '))} · ${fd(e.d)}`:'—';
  const bv=best(p.ev.filter(e=>e.w),e=>e.f-e.c).h[0],wd=best(p.ev.filter(e=>!e.w),e=>e.c-e.f).h[0],pt={},rv={};
@@ -363,7 +368,7 @@ function inf(t,x){const o=document.createElement('div');o.style.cssText='positio
 window.alert=t=>ask(t);
 const A={tab(v){tab=v;render();scrollTo(0,0)},
  sc(v,t){const[k,f,x]=v.split(':');(SC[k]=SC[k]||{})[f]=f==='w'?x:+x;[...t.parentNode.children].forEach(b=>b.classList.toggle('p',b===t))},
- rco(v){RCO=RCO===v?null:v;render()},
+ rco(v){RCO=RCO===v?null:v;render()},lgo(v){lgModal(v)},
  jday(v){jd=+v;render()},
  copiar(v,t){const txt=sumTxt(+v),fb=()=>{const o=t.textContent;t.textContent='✓ Copiado';setTimeout(()=>t.textContent=o,2000)};let ok=false;const x=document.createElement('textarea');x.value=txt;x.style.cssText='position:fixed;opacity:0';document.body.appendChild(x);x.select();try{ok=document.execCommand('copy')}catch(e){}x.remove();
   if(ok)fb();else if(navigator.clipboard)navigator.clipboard.writeText(txt).then(fb).catch(()=>inf('Copia este texto',txt));else inf('Copia este texto',txt)},
