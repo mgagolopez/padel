@@ -132,9 +132,12 @@ const b64=s=>{const b=new TextEncoder().encode(s);let x='';for(let i=0;i<b.lengt
 const gh=(m,body,u='/contents/data.json')=>fetch('https://api.github.com/repos/'+GH.repo+u,{method:m,headers:{Authorization:'Bearer '+GH.tok,Accept:'application/vnd.github+json'},body:body&&JSON.stringify(body)});
 async function ghLoad(){const r=await gh('GET');if(r.status===404){GH.sha=null;return null}if(!r.ok)throw r.status;const j=await r.json();GH.sha=j.sha;return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(j.content.replace(/\n/g,'')),c=>c.charCodeAt(0))))}
 const guess=()=>location.hostname.endsWith('.github.io')?location.hostname.split('.')[0]+'/'+(location.pathname.split('/')[1]||''):'';
-let Q=Promise.resolve();
-const save=()=>{if(!ADMIN)return;Q=Q.then(async()=>{toast('Guardando…');const body=()=>({message:'Actualización '+new Date().toISOString().slice(0,16),content:b64(JSON.stringify(S)),sha:GH.sha||undefined});
- try{let r=await gh('PUT',body());if(r.status===409||r.status===422){await ghLoad();r=await gh('PUT',body())}if(!r.ok)throw r.status;GH.sha=(await r.json()).content.sha;toast('✓ Guardado',1)}catch(e){toast('⚠ No se pudo guardar ('+e+')')}})},msg=t=>{const e=$('#msg');if(e)e.textContent=t};
+let Q=Promise.resolve(),SV=0,DIRTY=false;
+const LK='pena-local',lput=d=>{try{localStorage.setItem(LK,JSON.stringify({S,dirty:d,t:Date.now()}))}catch(e){}},lget=()=>{try{return JSON.parse(localStorage.getItem(LK))}catch(e){return null}};
+const save=()=>{if(!ADMIN)return;const v=++SV;DIRTY=true;lput(true);Q=Q.then(async()=>{if(v!==SV)return;toast('Guardando…');const body=()=>({message:'Actualización '+new Date().toISOString().slice(0,16),content:b64(JSON.stringify(S)),sha:GH.sha||undefined});
+ try{let r=await gh('PUT',body());if(r.status===409||r.status===422){await ghLoad();r=await gh('PUT',body())}if(!r.ok)throw r.status;GH.sha=(await r.json()).content.sha;if(v===SV){DIRTY=false;lput(false)}toast('✓ Guardado',1)}catch(e){toast('⚠ Sin conexión: los cambios se quedan guardados en este móvil y se subirán solos al volver la cobertura. No cierres sesión de admin.')}})};
+const retry=()=>{if(ADMIN&&DIRTY&&navigator.onLine!==false)save()};addEventListener('online',retry);setInterval(retry,20000);
+const msg=t=>{const e=$('#msg');if(e)e.textContent=t};
 const opts=(a,s)=>'<option value="">—</option>'+a.map(n=>`<option ${n===s?'selected':''}>${esc(n)}</option>`).join('');
 const sombra=p=>{const by={};p.ev.filter(e=>e.rp).forEach(e=>(by[e.d]=by[e.d]||[]).push(e));let dt=null,bs=[0,1];
  Object.entries(by).forEach(([date,a])=>{const w1=a.filter(e=>e.k===1&&e.w).length;if(!a.some(e=>e.lv)&&a.length>=3&&w1===a.length&&(!dt||date<dt))dt=date;if(w1/a.length>bs[0]/bs[1]||(w1/a.length===bs[0]/bs[1]&&w1>bs[0]))bs=[w1,a.length]});
@@ -394,8 +397,8 @@ const A={tab(v){tab=v;render();scrollTo(0,0)},
  wfin(){const d=live(),r=wsave(1);if(!r)return;if(!d.rounds.length){S.days=S.days.filter(x=>x!==d);WO=false;save();render();return}d.live=false;delete d.next;WFIN=d.id;save();render()},
  wcopy(){const t=$('#wtx');t.select();let ok=false;try{ok=document.execCommand('copy')}catch(e){}if(!ok&&navigator.clipboard)navigator.clipboard.writeText(t.value).catch(()=>{});$('#wm').textContent='✓ Copiado. Si no se copia, mantén pulsado el texto.'},
  async adin(){const repo=$('#gr').value.trim(),tok=$('#gt').value.trim();if(!/^[\w.-]+\/[\w.-]+$/.test(repo)||!tok)return msg('Rellena repositorio y token.');GH={repo,tok};
-  try{const r=await gh('GET',null,''),j=await r.json();if(!r.ok||!j.permissions||!j.permissions.push)throw 'sin permiso de escritura';const d=await ghLoad();if(d)S=norm(d);ADMIN=true;try{localStorage.setItem('pena-gh',JSON.stringify({repo,tok}))}catch(e){}tab='adm';render()}catch(e){GH={};msg('Token o repositorio no válidos ('+e+').')}},
- adout(){ADMIN=false;GH={};try{localStorage.removeItem('pena-gh')}catch(e){}tab='clas';render()},
+  try{const r=await gh('GET',null,''),j=await r.json();if(!r.ok||!j.permissions||!j.permissions.push)throw 'sin permiso de escritura';const d=await ghLoad(),lc=lget();if(lc&&lc.dirty&&lc.S){S=norm(lc.S);ADMIN=true;save()}else if(d){S=norm(d);lput(false)}ADMIN=true;try{localStorage.setItem('pena-gh',JSON.stringify({repo,tok}))}catch(e){}tab='adm';render()}catch(e){GH={};msg('Token o repositorio no válidos ('+e+').')}},
+ adout(){const go=()=>{ADMIN=false;GH={};try{localStorage.removeItem('pena-gh')}catch(e){}tab='clas';render()};if(DIRTY)return ask('Hay cambios sin subir por falta de cobertura. Si cierras sesión no se subirán hasta que vuelvas a entrar. ¿Cerrar igualmente?',go);go()},
  delr(v){const [id,i]=v.split(':'),d=S.days.find(x=>x.id==id);if(d)ask('¿Borrar esta ronda?',()=>{d.rounds.splice(+i,1);save();render()})},
  ren(v,n,t){if(!n||n===v||S.players.some(p=>p.n===n)){if(t)t.value=v;return}S.players.find(p=>p.n===v).n=n;const f=a=>a.map(x=>x===v?n:x);S.days.forEach(d=>{d.att=f(d.att);if(d.virt&&d.virt[v]!=null){d.virt[n]=d.virt[v];delete d.virt[v]}d.rounds.forEach(R=>R.forEach(m=>{m.a=f(m.a);m.b=f(m.b)}))});if(ME===v)ME=n;save();render()},
  sort(v){sortBy=v;render()},posf(v){posF=v;open=null;render()},info(v){inf(INFO[v][0],INFO[v][1])},open(v){open=open===v?null:v;render()},ptn(v){PT=PT===v?null:v;render()},addr(v){ADDR=+v;render()},addrx(){ADDR=null;render()},
@@ -445,8 +448,9 @@ render();
 function jnav(dir){const ds=[...stats().D].reverse();if(!ds.length)return;const sel=ds.find(d=>d.id===jd)||ds.find(d=>d.live)||ds[0],i=ds.indexOf(sel),n=Math.max(0,Math.min(ds.length-1,i+dir));if(n===i)return;jd=ds[n].id;render();const b=document.querySelector('[data-act=jday].p');if(b&&b.scrollIntoView)b.scrollIntoView({inline:'center',block:'nearest'})}
 (()=>{let x0=null,y0=0,t0=0,ok=false;document.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;t0=Date.now();ok=!e.target.closest('[data-noswipe],input,textarea,select')},{passive:true});
  document.addEventListener('touchend',e=>{if(x0==null||!ok||tab!=='jor'||WO)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6&&Date.now()-t0<800)jnav(dx<0?1:-1)},{passive:true})})();
-(async()=>{let g=null;try{g=JSON.parse(localStorage.getItem('pena-gh'))}catch(e){}
- if(g&&g.tok){GH=g;try{S=norm((await ghLoad())||EMPTY());ADMIN=true}catch(e){GH={};try{localStorage.removeItem('pena-gh')}catch(x){}}}
+(async()=>{let g=null;try{g=JSON.parse(localStorage.getItem('pena-gh'))}catch(e){}const loc=lget();
+ if(g&&g.tok){GH=g;let rem=null,net=false;try{rem=await ghLoad()}catch(e){net=!(e===401||e===403);if(!net){GH={};try{localStorage.removeItem('pena-gh')}catch(x){}}}
+  if(GH.tok){ADMIN=true;if(loc&&loc.dirty&&loc.S){S=norm(loc.S);DIRTY=true;toast('Recuperados los cambios que no se habían subido. Subiendo…');if(!net)save()}else if(rem){S=norm(rem);lput(false)}else if(loc&&loc.S)S=norm(loc.S);else if(!net)S=EMPTY();if(net)toast('⚠ Sin conexión: trabajando con los datos de este móvil.')}}
  if(!S){try{const r=await fetch('data.json?'+Date.now());S=r.ok?norm(await r.json()):EMPTY()}catch(e){S=EMPTY()}}
  render()})();
 </script></body></html>
