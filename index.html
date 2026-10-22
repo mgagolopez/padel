@@ -55,7 +55,7 @@ label{font-size:10.5px;color:var(--mu);text-transform:uppercase;letter-spacing:.
 .fi i{display:inline-block;width:30px;height:30px;line-height:27px;text-align:center;border-radius:8px;font-style:normal;font-weight:700;margin-right:6px;border:1.5px solid var(--tx)}
 .cv{background:#16a34a;border-color:#16a34a;color:#fff}.cd{background:#dc2626;border-color:#dc2626;color:#fff}
 .pbar{height:5px;border-radius:3px;background:#e6e6e6;margin-top:7px;overflow:hidden}.pbar i{display:block;height:100%;background:var(--tx);border-radius:3px}
-.tb{width:100%;border-collapse:collapse;font-size:14px}.tb th{color:var(--mu);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em;text-align:right;padding:4px}.tb td{padding:7px 4px;text-align:right;border-top:1px solid var(--bd)}.tb th:nth-child(2),.tb td:nth-child(2){text-align:left}.tb td:first-child{color:var(--mu);width:22px;text-align:center}.up{color:#15803d;font-weight:700}.dn{color:#b91c1c;font-weight:700}
+.tb{width:100%;border-collapse:collapse;font-size:14px}.tb th{color:var(--mu);font-weight:600;font-size:10px;text-transform:uppercase;letter-spacing:.08em;text-align:right;padding:4px}.tb td{white-space:nowrap;padding:7px 4px;text-align:right;border-top:1px solid var(--bd)}.tb th:nth-child(2),.tb td:nth-child(2){text-align:left}.tb td:first-child{color:var(--mu);width:22px;text-align:center}.up{color:#15803d;font-weight:700}.dn{color:#b91c1c;font-weight:700}
 .ib{width:16px;height:16px;border-radius:50%;border:1px solid var(--mu);background:none;color:var(--mu);font:600 11px/14px system-ui,sans-serif;text-align:center;padding:0;cursor:pointer;vertical-align:middle;margin-left:5px}
 .sum{background:var(--bg);border-left:3px solid var(--tx);padding:10px 12px;border-radius:8px;font-size:14px;margin:8px 0}
 summary{cursor:pointer;font-weight:600}
@@ -89,7 +89,7 @@ summary{cursor:pointer;font-weight:600}
 </style></head><body><div class="w">
 <header><svg viewBox="0 0 24 24" role="img" aria-label="Escudo"><path d="M12 1.8 21 5v7.2c0 5.1-3.8 8.6-9 10-5.2-1.4-9-4.9-9-10V5z" fill="#111"/><circle cx="12" cy="11.6" r="5.6" fill="#fff"/><path d="M7.3 8.9c2.7 1.7 2.7 4.7 0 6.5M16.7 8.9c-2.7 1.7-2.7 4.7 0 6.5" fill="none" stroke="#111" stroke-width="1.1" stroke-linecap="round"/></svg><h1 id="ttl">Peña de Pádel</h1></header>
 <nav id="nav"></nav><div id="bn"></div><div id="main"></div><div id="wz" style="display:none;position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)"></div>
-<div id="st" style="position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;display:none;z-index:60"></div>
+<div id="off" style="position:fixed;bottom:calc(100px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);white-space:nowrap;box-shadow:0 1px 4px rgba(0,0,0,.25);background:#b45309;color:#fff;padding:3px 9px;border-radius:12px;font-size:11.5px;font-weight:600;display:none;z-index:70;pointer-events:none">⚠ Sin conexión · cambios en el móvil</div><div id="st" style="pointer-events:none;position:fixed;bottom:calc(96px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%);background:#111;color:#fff;padding:8px 14px;border-radius:8px;font-size:13px;display:none;z-index:60"></div>
 </div>
 <script>
 const K='pena-padel-v2',$=s=>document.querySelector(s),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])),fd=d=>d.split('-').reverse().join('/');
@@ -134,8 +134,9 @@ async function ghLoad(){const r=await gh('GET');if(r.status===404){GH.sha=null;r
 const guess=()=>location.hostname.endsWith('.github.io')?location.hostname.split('.')[0]+'/'+(location.pathname.split('/')[1]||''):'';
 let Q=Promise.resolve(),SV=0,DIRTY=false;
 const LK='pena-local',lput=d=>{try{localStorage.setItem(LK,JSON.stringify({S,dirty:d,t:Date.now()}))}catch(e){}},lget=()=>{try{return JSON.parse(localStorage.getItem(LK))}catch(e){return null}};
-const save=()=>{if(!ADMIN)return;const v=++SV;DIRTY=true;lput(true);Q=Q.then(async()=>{if(v!==SV)return;toast('Guardando…');const body=()=>({message:'Actualización '+new Date().toISOString().slice(0,16),content:b64(JSON.stringify(S)),sha:GH.sha||undefined});
- try{let r=await gh('PUT',body());if(r.status===409||r.status===422){await ghLoad();r=await gh('PUT',body())}if(!r.ok)throw r.status;GH.sha=(await r.json()).content.sha;if(v===SV){DIRTY=false;lput(false)}toast('✓ Guardado',1)}catch(e){toast('⚠ Sin conexión: los cambios se quedan guardados en este móvil y se subirán solos al volver la cobertura. No cierres sesión de admin.')}})};
+const save=()=>{if(!ADMIN)return;const v=++SV;DIRTY=true;lput(true);Q=Q.then(async()=>{if(v!==SV)return;if(!DIRTY||$('#off').style.display!=='block')toast('Guardando…');const body=()=>({message:'Actualización '+new Date().toISOString().slice(0,16),content:b64(JSON.stringify(S)),sha:GH.sha||undefined});
+ try{let r=await gh('PUT',body());if(r.status===409||r.status===422){await ghLoad();r=await gh('PUT',body())}if(!r.ok)throw r.status;GH.sha=(await r.json()).content.sha;if(v===SV){DIRTY=false;lput(false)}offB(0);toast('✓ Guardado',1)}catch(e){$('#st').style.display='none';offB(1)}})};
+const offB=v=>{const e=$('#off');if(e)e.style.display=v?'block':'none'};
 const retry=()=>{if(ADMIN&&DIRTY&&navigator.onLine!==false)save()};addEventListener('online',retry);setInterval(retry,20000);
 const msg=t=>{const e=$('#msg');if(e)e.textContent=t};
 const opts=(a,s)=>'<option value="">—</option>'+a.map(n=>`<option ${n===s?'selected':''}>${esc(n)}</option>`).join('');
@@ -450,7 +451,7 @@ function jnav(dir){const ds=[...stats().D].reverse();if(!ds.length)return;const 
  document.addEventListener('touchend',e=>{if(x0==null||!ok||tab!=='jor'||WO)return;const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;x0=null;if(Math.abs(dx)>70&&Math.abs(dx)>Math.abs(dy)*1.6&&Date.now()-t0<800)jnav(dx<0?1:-1)},{passive:true})})();
 (async()=>{let g=null;try{g=JSON.parse(localStorage.getItem('pena-gh'))}catch(e){}const loc=lget();
  if(g&&g.tok){GH=g;let rem=null,net=false;try{rem=await ghLoad()}catch(e){net=!(e===401||e===403);if(!net){GH={};try{localStorage.removeItem('pena-gh')}catch(x){}}}
-  if(GH.tok){ADMIN=true;if(loc&&loc.dirty&&loc.S){S=norm(loc.S);DIRTY=true;toast('Recuperados los cambios que no se habían subido. Subiendo…');if(!net)save()}else if(rem){S=norm(rem);lput(false)}else if(loc&&loc.S)S=norm(loc.S);else if(!net)S=EMPTY();if(net)toast('⚠ Sin conexión: trabajando con los datos de este móvil.')}}
+  if(GH.tok){ADMIN=true;if(loc&&loc.dirty&&loc.S){S=norm(loc.S);DIRTY=true;toast('Recuperados los cambios que no se habían subido. Subiendo…');if(!net)save()}else if(rem){S=norm(rem);lput(false)}else if(loc&&loc.S)S=norm(loc.S);else if(!net)S=EMPTY();if(net)offB(1)}}
  if(!S){try{const r=await fetch('data.json?'+Date.now());S=r.ok?norm(await r.json()):EMPTY()}catch(e){S=EMPTY()}}
  render()})();
 </script></body></html>
